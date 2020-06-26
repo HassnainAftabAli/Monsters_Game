@@ -7,22 +7,29 @@
 #include <iostream>
 #include <thread>
 
-class Server_TCP;
+class Logic_Server_Monsters;
 
 // Callback to data received
-typedef void(*MessageRecievedHandler)(Server_TCP* listener, SOCKET socketId, std::string msg);
+typedef void(*MessageRecievedHandler)(Logic_Server_Monsters* connected_instance, SOCKET socketId, std::string msg);
+
+// Callback to data received
+typedef void(*NewClientConnectedHandler)(Logic_Server_Monsters* connected_instance, SOCKET socketId);
 
 class Server_TCP {
 
 private:
-	std::string		m_ipAddress;			// IP Address of the server
-	int				m_port;					// Listening port # on the server
-	sockaddr_in		m_hint;
-	bool			m_run_thread_running;	//end thread control or run control
-	std::thread		m_run_thread;
-	SOCKET			m_listening_sock;
+	std::string					m_ipAddress;			// IP Address of the server
+	int							m_port;					// Listening port # on the server
+	sockaddr_in					m_hint;
+	bool						m_run_thread_running;	//end thread control or run control
+	std::thread					m_run_thread;
+	SOCKET						m_listening_sock;
+	Logic_Server_Monsters*		m_connected_instance;	//The game instance currently utilizing this server
 
 	fd_set			master;					// Create the master file descriptor 
+
+	// New client connected event handler, just a function pointer to handle it externally from class
+	NewClientConnectedHandler	NewClientConnected;
 
 	// Message received event handler, just a function pointer to handle it externally from class
 	MessageRecievedHandler	MessageReceived;
@@ -32,7 +39,7 @@ private:
 
 public:
 
-	Server_TCP(std::string ipAddress, int port, MessageRecievedHandler handler);
+	Server_TCP(Logic_Server_Monsters* connected_instance, std::string ipAddress, int port, MessageRecievedHandler mr_handler, NewClientConnectedHandler ncc_handler);
 
 	~Server_TCP();
 

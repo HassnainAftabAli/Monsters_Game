@@ -38,8 +38,8 @@ SOCKET Server_TCP::CreateSocket()
 	return sock_server;
 }
 
-Server_TCP::Server_TCP(std::string ipAddress, int port, MessageRecievedHandler handler)
-	: m_ipAddress(ipAddress), m_port(port), MessageReceived(handler)
+Server_TCP::Server_TCP(Logic_Server_Monsters* connected_instance, std::string ipAddress, int port, MessageRecievedHandler mr_handler, NewClientConnectedHandler ncc_handler)
+	: m_connected_instance(connected_instance), m_ipAddress(ipAddress), m_port(port), MessageReceived(mr_handler), NewClientConnected(ncc_handler)
 {
 	FD_ZERO(&master);
 	m_run_thread_running = false;
@@ -47,22 +47,16 @@ Server_TCP::Server_TCP(std::string ipAddress, int port, MessageRecievedHandler h
 
 Server_TCP::~Server_TCP() {
 
-	//closing all sockets =========================================
-	// Message to let users know what's happening.
-	std::string msg = "Server is shutting down. Goodbye\r\n";
+	//closing all sockets 
 	while (master.fd_count > 0)
 	{
 		// Get the socket number
 		SOCKET sock = master.fd_array[0];
 
-		// Send the goodbye message
-		send(sock, msg.c_str(), (int)(msg.size() + 1), 0);
-
 		// Remove it from the master file list and close the socket
 		FD_CLR(sock, &master);
 		closesocket(sock);
 	}
-	//closing all sockets =========================================
 
 	WSACleanup();
 
@@ -70,9 +64,7 @@ Server_TCP::~Server_TCP() {
 	if (m_run_thread_running)
 	{
 		m_run_thread_running = false;  //stopping loop in ThreadRecv() 
-		//std::cout << "Finishing RUN thread..." << std::endl;
-		m_run_thread.join();			//wait it to finish properly (naturally)
-		//std::cout << "Done." << std::endl;
+		m_run_thread.join();		   //wait for it to finish properly
 	}
 }
 
@@ -119,9 +111,8 @@ void Server_TCP::SendToAll(std::string message)
 	}
 }
 
-void Server_TCP::RunInThread() //unblocked
+void Server_TCP::RunInThread()
 {
-	//creating the run thread using lambda's
 	this->m_run_thread = std::thread([&]()
 		{
 			Run();
@@ -138,14 +129,10 @@ void Server_TCP::Run()
 		return;
 	}
 
-	// Add our first socket that we're interested in interacting with; the listening socket!
-	// It's important that this socket is added for our server or else we won't 'hear' incoming
-	// connections 
+	//inserting listening socket
 	FD_SET(m_listening_sock, &master);
 
-
-
-	// this will be changed by the \quit command (see below, bonus not in video!)
+	// this will be changed by the \quit command
 	m_run_thread_running = true;
 	std::cout << "Server is running" << std::endl;
 	while (m_run_thread_running)
@@ -159,7 +146,6 @@ void Server_TCP::Run()
 		// Loop through all the current connections / potential connect
 		for (int i = 0; i < socketCount; i++)
 		{
-			// Makes things easy for us doing this assignment
 			SOCKET sock = copy.fd_array[i];
 
 			// Is it an inbound communication?
@@ -171,9 +157,9 @@ void Server_TCP::Run()
 				// Add the new connection to the list of connected clients
 				FD_SET(client, &master);
 
-				// Send a welcome message to the connected client
-				/*std::string welcomeMsg = "Welcome to the communication Server!\r\n";
-				send(client, welcomeMsg.c_str(), (int)(welcomeMsg.size() + 1), 0);*/
+				if (NewClientConnected != NULL) {
+					NewClientConnected(this->m_connected_instance, client);
+				}
 			}
 			else // It's an inbound message
 			{
@@ -208,7 +194,7 @@ void Server_TCP::Run()
 					//handle msg externally from class
 					if (MessageReceived != NULL)
 					{
-						MessageReceived(this, sock, std::string(buf, 0, bytesIn));
+						MessageReceived(this->m_connected_instance, sock, std::string(buf, 0, bytesIn));
 					}
 				}
 			}

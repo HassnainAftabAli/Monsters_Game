@@ -39,12 +39,9 @@ SOCKET Client_TCP::CreateSocket()
 
 void Client_TCP::ThreadRecv()
 {
-	//std::cout << "Recv thread started, m_socket: " << m_socket << std::endl;
 	m_recv_thread_running = true;
 	while (m_recv_thread_running)
 	{
-		//std::cout << "Recv thread running... m_socket: " << this->m_socket << std::endl;
-
 		char buf[4096];
 		ZeroMemory(buf, 4096);
 
@@ -56,11 +53,7 @@ void Client_TCP::ThreadRecv()
 				MessageReceived(std::string(buf, 0, bytesReceived));
 			}
 		}
-		else {
-			//std::cout << "Received nothing" << std::endl;
-		}
 	}
-	//std::cout << "Recv thread ended" << std::endl;
 }
 
 Client_TCP::Client_TCP() {
@@ -74,9 +67,7 @@ Client_TCP::~Client_TCP() {
 	if (m_recv_thread_running)
 	{
 		m_recv_thread_running = false;  //stopping loop in ThreadRecv() 
-		//std::cout << "Finishing RECV thread..." << std::endl;
-		m_recv_thread.join();			//wait it to finish properly (naturally)
-		//std::cout << "Done." << std::endl;
+		m_recv_thread.join();			//wait for it to finish properly
 	}
 }
 
@@ -115,10 +106,6 @@ bool Client_TCP::Send(std::string message)
 void Client_TCP::ListenRecvInThread(ClientMessageRecievedHandler handler)
 {
 	MessageReceived = handler;
-	//creating the recv thread //This method also works
-	//std::thread recv_t(&TCPClient::ThreadRecv, this);
-	//moving thread variable to class member, so we can join it later
-	//this->m_recv_thread = std::move(recv_t);
 
 	//creating the recv thread using lambda's
 	this->m_recv_thread = std::thread([&]()
