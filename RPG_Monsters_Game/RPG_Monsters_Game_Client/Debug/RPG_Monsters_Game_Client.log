@@ -1,0 +1,3 @@
+﻿  Logic_Client_Monsters.cpp
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Client\Logic_Client_Monsters.cpp(11,17): warning C4154: deletion of an array expression; conversion to pointer supplied
+  RPG_Monsters_Game_Client.vcxproj -> C:\Users\Usama\source\repos\RPG_Monsters_Game\Debug\RPG_Monsters_Game_Client.exe

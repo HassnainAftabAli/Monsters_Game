@@ -1,0 +1,11 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(467,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (RPG_Monsters_Game.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Logic_Server_Monsters.cpp
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(84,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(103,14): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(105,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(134,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(190,20): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(190,62): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(231,23): warning C4154: deletion of an array expression; conversion to pointer supplied
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(232,36): warning C4154: deletion of an array expression; conversion to pointer supplied
+  RPG_Monsters_Game_Server.vcxproj -> C:\Users\Usama\source\repos\RPG_Monsters_Game\Debug\RPG_Monsters_Game_Server.exe
