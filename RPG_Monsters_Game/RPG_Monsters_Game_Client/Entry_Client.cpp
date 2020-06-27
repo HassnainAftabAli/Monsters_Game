@@ -2,9 +2,8 @@
 
 int main() {
 
-	//giving the server some time to start before we create players
 	Logic_Client_Monsters* player_1 = new Logic_Client_Monsters;
-	player_1->JoinGame();
+	player_1->JoinGame("127.0.0.1", 54000);
 
 	delete player_1;
 }

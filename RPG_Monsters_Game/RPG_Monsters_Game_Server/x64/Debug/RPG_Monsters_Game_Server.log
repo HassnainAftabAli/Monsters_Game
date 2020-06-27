@@ -1,0 +1,9 @@
+﻿  Logic_Server_Monsters.cpp
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(111,1): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(115,14): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(152,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(170,6): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(177,6): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(254,23): warning C4154: deletion of an array expression; conversion to pointer supplied
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(255,36): warning C4154: deletion of an array expression; conversion to pointer supplied
+  RPG_Monsters_Game_Server.vcxproj -> C:\Users\Usama\source\repos\RPG_Monsters_Game\x64\Debug\RPG_Monsters_Game_Server.exe

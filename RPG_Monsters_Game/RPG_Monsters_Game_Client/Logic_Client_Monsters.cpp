@@ -6,14 +6,68 @@ wchar_t Logic_Client_Monsters::screen[Logic_Client_Monsters::c_grid_size * Logic
 HANDLE Logic_Client_Monsters::hConsole;
 size_t screen_buffer_size;
 HWND console;
+int threat_count = 0;
 
-Logic_Client_Monsters::~Logic_Client_Monsters() {
-	delete[] screen;
+//connects the client to the server
+int Logic_Client_Monsters::JoinGame(std::string ip, int port)
+{
+	screen_buffer_size = Logic_Client_Monsters::c_grid_size * Logic_Client_Monsters::c_grid_size;
+	// Create Screen Buffer
+	Logic_Client_Monsters::hConsole = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
+	SetConsoleActiveScreenBuffer(hConsole);
+
+	//Setting Console Window Size
+	console = GetConsoleWindow();
+	RECT r;
+	GetWindowRect(console, &r);
+	MoveWindow(console, r.left, r.top, (c_grid_size + 2) * 8, (c_grid_size) * 16, true); //since default font is consolas with char width 8 and height 16
+
+	string inputstr;
+	this->client_instance = new Client_TCP;
+
+	if (this->client_instance->Connect(ip, port))
+	{
+		this->client_instance->ListenRecvInThread(MessageReceived);
+
+		while (true)
+		{
+			this->RecordPlayerMovement();
+		}
+	}
+	else {
+		cout << "Connect() fail." << endl;
+	}
+
+	delete this->client_instance;
+
+	std::cin.get(); // wait
+	return 0;
 }
 
+//any msg sent by server will call this function
+void Logic_Client_Monsters::MessageReceived(std::string msg_received)
+{
+	if (msg_received.compare("m_nearby") == 0) {
+		if (threat_count < 5) {
+			threat_count++;
+			swprintf_s(&screen[Logic_Client_Monsters::c_grid_size - 16], 16, L"THREAT COUNT: %d", threat_count);
+		}
+		else {
+			swprintf_s(&screen[Logic_Client_Monsters::c_grid_size - 16], 16, L"    YOU LOST   ", threat_count);
+		}
+	}
+	else {
+		char entity_char = msg_received[0];
+		msg_received.erase(0, 1);
+		Logic_Client_Monsters::UpdateLocations(msg_received, "#", (wchar_t)entity_char);
+	}
+}
+
+//updates the locations of the entities
 void Logic_Client_Monsters::UpdateLocations(string locations, string delimiter, wchar_t print_char) {
 	DWORD dwBytesWritten = 0;
-	
+
+	//empty past location
 	std::replace(std::begin(screen), std::begin(screen) + screen_buffer_size, print_char, L' ');
 
 	size_t pos = 0;
@@ -31,26 +85,13 @@ void Logic_Client_Monsters::UpdateLocations(string locations, string delimiter, 
 			yPos = stoi(token);
 			screen[(yPos * c_grid_size) + xPos] = print_char;
 		}
-		
+
 		locations.erase(0, pos + delimiter.length());
 		index += 1;
 	}
 
-	Logic_Client_Monsters::screen[screen_buffer_size - 1] = '\0';
+	//write onto the console
 	WriteConsoleOutputCharacter(hConsole, screen, screen_buffer_size, { 0,0 }, &dwBytesWritten);
-}
-
-//any msg sent by server will call this function
-void Logic_Client_Monsters::MessageReceived(std::string msg_received)
-{
-	if (msg_received.compare("m_nearby") == 0) {
-		cout << "MONSTER NEARBY!";
-	}
-	else {
-		char entity_char = msg_received[0];
-		msg_received.erase(0, 1);
-		Logic_Client_Monsters::UpdateLocations(msg_received, "#", (wchar_t)entity_char);
-	}
 }
 
 //to record if the player pressed a key
@@ -64,7 +105,7 @@ bool KeyPressed(char key) {
 	return false;
 }
 
-//this function might seem to have ugly and repetitive code but it was necessary (made me sad)
+//allows controlling the player using WSAD keys
 void Logic_Client_Monsters::RecordPlayerMovement() {
 	size_t steps = 1; //we are setting this to 1 to give it a game-like feel. Can be changed for other purposes or cin by user.
 	if (KeyPressed('A')) {
@@ -86,37 +127,7 @@ void Logic_Client_Monsters::RecordPlayerMovement() {
 	}
 }
 
-int Logic_Client_Monsters::JoinGame()
-{
-	screen_buffer_size = Logic_Client_Monsters::c_grid_size * Logic_Client_Monsters::c_grid_size;
-	// Create Screen Buffer
-	Logic_Client_Monsters::hConsole = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
-	SetConsoleActiveScreenBuffer(hConsole);
-	
-	//Setting Console Window Size
-	console = GetConsoleWindow();
-	RECT r;
-	GetWindowRect(console, &r);
-	MoveWindow(console, r.left, r.top, (c_grid_size+2)*8, (c_grid_size)*16, true); //since default font is consolas with char width 8 and height 16
-
-	string inputstr;
-	this->client_instance = new Client_TCP;
-
-	if (this->client_instance->Connect("127.0.0.1", 54000))
-	{
-		this->client_instance->ListenRecvInThread(MessageReceived);
-
-		while (true)
-		{
-			this->RecordPlayerMovement();
-		}
-	}
-	else {
-		cout << "Connect() fail." << endl;
-	}
-
-	delete this->client_instance;
-
-	std::cin.get(); // wait
-	return 0;
+Logic_Client_Monsters::~Logic_Client_Monsters() {
+	delete[] screen;
 }
+

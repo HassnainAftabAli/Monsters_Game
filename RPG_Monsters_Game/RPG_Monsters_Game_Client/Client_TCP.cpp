@@ -96,9 +96,15 @@ bool Client_TCP::Connect(std::string ipAddress, int port)
 
 bool Client_TCP::Send(std::string message)
 {
-	if (!message.empty() && m_socket != INVALID_SOCKET)
-	{
-		return send(m_socket, message.c_str(), message.size() + 1, 0) != SOCKET_ERROR;
+	try {
+		if (!message.empty() && m_socket != INVALID_SOCKET)
+		{
+			return send(m_socket, message.c_str(), message.size() + 1, 0) != SOCKET_ERROR;
+		}
+	}
+	catch (std::exception ex) {
+		std::cout << ex.what();
+		return false;
 	}
 	return false;
 }

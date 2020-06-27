@@ -3,9 +3,9 @@
 C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(84,20): warning C4018: '<': signed/unsigned mismatch
 C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(103,14): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(105,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(134,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(190,20): warning C4018: '>': signed/unsigned mismatch
-C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(190,62): warning C4018: '>': signed/unsigned mismatch
-C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(231,23): warning C4154: deletion of an array expression; conversion to pointer supplied
-C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(232,36): warning C4154: deletion of an array expression; conversion to pointer supplied
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(138,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(194,20): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(194,62): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(234,23): warning C4154: deletion of an array expression; conversion to pointer supplied
+C:\Users\Usama\source\repos\RPG_Monsters_Game\RPG_Monsters_Game_Server\Logic_Server_Monsters.cpp(235,36): warning C4154: deletion of an array expression; conversion to pointer supplied
   RPG_Monsters_Game_Server.vcxproj -> C:\Users\Usama\source\repos\RPG_Monsters_Game\Debug\RPG_Monsters_Game_Server.exe
